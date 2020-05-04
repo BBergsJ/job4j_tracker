@@ -70,6 +70,7 @@ public class Tracker {
             System.arraycopy(items, start, items, index, size);
             position--;
         }
+
         return rsl;
     }
 }

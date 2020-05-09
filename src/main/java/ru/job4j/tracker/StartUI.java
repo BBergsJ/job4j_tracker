@@ -42,17 +42,21 @@ public class StartUI {
             } else if (select == 4) {
                 System.out.println("Enter Id: ");
                 String findId = scanner.nextLine();
-                System.out.println("Item is : " + tracker.findById(findId).getName());
+                if (tracker.findById(findId) != null) {
+                    System.out.println("Item is : " + tracker.findById(findId).getName());
+                } else {
+                    System.out.println("Id not found.");
+                }
             } else if (select == 5) {
                 System.out.println("Enter Name: ");
                 String findName = scanner.nextLine();
                 Item[] names = tracker.findByName(findName);
-                for (Item s: names) {
-                    if (s.getName() != null) {
-                        System.out.println("Item - " + s.getName() + "; with Id - " + s.getId());
-                    } else {
-                        System.out.println("Empty.");
+                if (names.length > 0) {
+                    for (Item item : names) {
+                        System.out.println(item.toString());
                     }
+                } else {
+                    System.out.println("Empty array");
                 }
             } else if (select == 6) {
                 run = false;

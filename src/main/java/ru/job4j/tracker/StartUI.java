@@ -18,8 +18,8 @@ public class StartUI {
                 tracker.add(item);
             } else if (select == 1) {
                 Item[] allElem = tracker.findAll();
-                for (Item s:allElem) {
-                    System.out.println("Name : " + s.getName() + ". Id : " + s.getId());
+                for (Item item:allElem) {
+                    System.out.println(item);
                 }
             } else if (select == 2) {
                 System.out.println("Enter old Id: ");
@@ -41,9 +41,9 @@ public class StartUI {
                 }
             } else if (select == 4) {
                 System.out.println("Enter Id: ");
-                String findId = scanner.nextLine();
-                if (tracker.findById(findId) != null) {
-                    System.out.println("Item is : " + tracker.findById(findId).getName());
+                Item findItem = tracker.findById(scanner.nextLine());
+                if (findItem != null) {
+                    System.out.println("Item is : " + findItem.getName());
                 } else {
                     System.out.println("Id not found.");
                 }
@@ -53,7 +53,7 @@ public class StartUI {
                 Item[] names = tracker.findByName(findName);
                 if (names.length > 0) {
                     for (Item item : names) {
-                        System.out.println(item.toString());
+                        System.out.println(item);
                     }
                 } else {
                     System.out.println("Empty array");

@@ -1,19 +1,15 @@
 package ru.job4j.tracker;
 
-import java.util.Scanner;
-
 public class StartUI {
 
-    public void init(Scanner scanner, Tracker tracker) {
+    public void init(Input input, Tracker tracker) {
         boolean run = true;
         while (run) {
             this.showMenu();
-            System.out.println("Select:");
-            int select = Integer.valueOf(scanner.nextLine());
+            int select = Integer.valueOf(input.askStr("Select:"));
             if (select == 0) {
                 System.out.println("=== Create a new Item ====");
-                System.out.print("Enter name: ");
-                String name = scanner.nextLine();
+                String name = input.askStr("Enter name: ");
                 Item item = new Item(name);
                 tracker.add(item);
             } else if (select == 1) {
@@ -22,34 +18,29 @@ public class StartUI {
                     System.out.println(item);
                 }
             } else if (select == 2) {
-                System.out.println("Enter old Id: ");
-                String oldId = scanner.nextLine();
-                System.out.println("Enter new name: ");
-                Item newName = new Item(scanner.nextLine());
+                String oldId = input.askStr("Enter old Id: ");
+                Item newName = new Item(input.askStr("Enter new name: "));
                 if (tracker.replace(oldId, newName)) {
                     System.out.println("Success!");
                 } else {
                     System.out.println("Error!");
                 }
             } else if (select == 3) {
-                System.out.println("Enter Id: ");
-                String deleteId = scanner.nextLine();
+                String deleteId = input.askStr("Enter Id: ");
                 if (tracker.delete(deleteId)) {
                     System.out.println("Success!");
                 } else {
                     System.out.println("Error!");
                 }
             } else if (select == 4) {
-                System.out.println("Enter Id: ");
-                Item findItem = tracker.findById(scanner.nextLine());
+                Item findItem = tracker.findById(input.askStr("Enter Id: "));
                 if (findItem != null) {
                     System.out.println("Item is : " + findItem.getName());
                 } else {
                     System.out.println("Id not found.");
                 }
             } else if (select == 5) {
-                System.out.println("Enter Name: ");
-                String findName = scanner.nextLine();
+                String findName = input.askStr("Enter Name: ");
                 Item[] names = tracker.findByName(findName);
                 if (names.length > 0) {
                     for (Item item : names) {
@@ -78,8 +69,8 @@ public class StartUI {
 
 
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+        Input input = new ConsoleInput();
         Tracker tracker = new Tracker();
-        new StartUI().init(scanner, tracker);
+        new StartUI().init(input, tracker);
     }
 }

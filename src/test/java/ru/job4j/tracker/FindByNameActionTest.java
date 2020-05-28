@@ -26,6 +26,6 @@ public class FindByNameActionTest {
                 .add("Item{id='" + item.getId() + "', name='" + item.getName() + "'}")
                 .toString();
         assertThat(new String(out.toByteArray()), is(expect));
-        System.setOut(def);
+        System.setOut(def); 
     }
 }

@@ -1,6 +1,6 @@
 package ru.job4j.tracker;
 
-public class StubAction implements UserAction{
+public class StubAction implements UserAction {
     private boolean call = false;
 
     @Override

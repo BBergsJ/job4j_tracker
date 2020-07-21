@@ -29,8 +29,8 @@ public class DiapasnFunctionTest {
     @Test
     public void whenWithFinalFunctionThenWithFinalResults() {
         DiapasnFunction test = new DiapasnFunction();
-        List<Double> result = test.diapason(5, 8, x -> Math.log(x) + 1);
-        List<Double> expected = Arrays.asList(2.6094379124341005, 2.791759469228055, 2.9459101490553135);
+        List<Double> result = test.diapason(5, 8, x -> Math.pow(2, x));
+        List<Double> expected = Arrays.asList(32.0, 64.0, 128.0);
         assertThat(result, is(expected));
     }
 }

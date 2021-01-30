@@ -5,13 +5,13 @@ import java.util.List;
 
 public class StartUI {
 
-    public void init(Input input, Tracker tracker, List<UserAction> actions) {
+    public void init(Input input, MemTracker memTracker, List<UserAction> actions) {
         boolean run = true;
         while (run) {
             this.showMenu(actions);
             int select = input.askInt("Select: ", actions.size());
             UserAction action = actions.get(select);
-            run = action.execute(input, tracker);
+            run = action.execute(input, memTracker);
         }
     }
 
@@ -25,7 +25,7 @@ public class StartUI {
     public static void main(String[] args) {
         Input input = new ConsoleInput();
         Input validate = new ValidateInput(input);
-        Tracker tracker = new Tracker();
+        MemTracker memTracker = new MemTracker();
         List<UserAction> actions = new ArrayList<>();
         actions.add(new CreateAction());
         actions.add(new ShowAllAction());
@@ -34,6 +34,6 @@ public class StartUI {
         actions.add(new FindByIdAction());
         actions.add(new FindByNameAction());
         actions.add(new ExitAction());
-        new StartUI().init(validate, tracker, actions);
+        new StartUI().init(validate, memTracker, actions);
     }
 }

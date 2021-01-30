@@ -17,11 +17,11 @@ public class FindByNameActionTest {
         PrintStream def = System.out;
         System.setOut(new PrintStream(out));
 
-        Tracker tracker = new Tracker();
+        MemTracker memTracker = new MemTracker();
         Item item = new Item("Test");
-        tracker.add(item);
+        memTracker.add(item);
         FindByNameAction act = new FindByNameAction();
-        act.execute(new StubInput(new String[] {"Test"}), tracker);
+        act.execute(new StubInput(new String[] {"Test"}), memTracker);
         String expect = new StringJoiner(System.lineSeparator(), "", System.lineSeparator())
                 .add("Item{id='" + item.getId() + "', name='" + item.getName() + "'}")
                 .toString();

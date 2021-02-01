@@ -3,6 +3,7 @@ package ru.job4j.tracker;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.util.List;
 import java.util.Properties;
 
@@ -33,6 +34,12 @@ public class SqlTracker implements Store {
 
     @Override
     public Item add(Item item) {
+        init();
+        try (PreparedStatement ps = cn.prepareStatement("insert into items (name) values (?)")) {
+            ps.setString(1, item.getName());
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
         return null;
     }
 

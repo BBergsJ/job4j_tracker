@@ -9,7 +9,7 @@ public class ShowAllAction implements UserAction {
     }
 
     @Override
-    public boolean execute(Input input, Store memTracker) {
+    public boolean execute(Input input, Store memTracker) throws Exception {
         List<Item> allElem = memTracker.findAll();
         for (Item item:allElem) {
             System.out.println(item);

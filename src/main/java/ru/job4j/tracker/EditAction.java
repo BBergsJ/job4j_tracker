@@ -7,7 +7,7 @@ public class EditAction implements UserAction {
     }
 
     @Override
-    public boolean execute(Input input, Store memTracker) {
+    public boolean execute(Input input, Store memTracker) throws Exception {
         String oldId = input.askStr("Enter old Id: ");
         Item newName = new Item(input.askStr("Enter new name: "));
         if (memTracker.replace(oldId, newName)) {

@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -34,37 +36,96 @@ public class SqlTracker implements Store {
 
     @Override
     public Item add(Item item) {
-        init();
         try (PreparedStatement ps = cn.prepareStatement("insert into items (name) values (?)")) {
             ps.setString(1, item.getName());
+            ps.executeUpdate();
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
-        return null;
+        return item;
     }
 
     @Override
     public boolean replace(String id, Item item) {
-        return false;
+        boolean rsl = indexOf(id) != -1;
+        try (PreparedStatement ps = cn.prepareStatement("update items set name = ? where id = ?")) {
+            ps.setString(1, item.getName());
+            ps.setInt(2, Integer.parseInt(id));
+            ps.executeUpdate();
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+        return rsl;
     }
 
     @Override
     public boolean delete(String id) {
-        return false;
+        boolean rsl = indexOf(id) != -1;
+        try (PreparedStatement ps = cn.prepareStatement("delete from items where id = ?")) {
+            ps.setInt(1, Integer.parseInt(id));
+            ps.executeUpdate();
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+        return rsl;
     }
 
     @Override
     public List<Item> findAll() {
-        return null;
+        List<Item> items = new ArrayList<>();
+        try (PreparedStatement ps = cn.prepareStatement("select * from items")) {
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                items.add(new Item(resultSet.getString("name")));
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+        return items;
     }
 
     @Override
     public List<Item> findByName(String key) {
-        return null;
+        List<Item> items = new ArrayList<>();
+        try (PreparedStatement ps = cn.prepareStatement("select * from items where name = ?")) {
+            ps.setString(1, key);
+            ResultSet resultSet = ps.executeQuery();
+            while (resultSet.next()) {
+                items.add(new Item(resultSet.getString("name")));
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+        return items;
     }
 
     @Override
     public Item findById(String id) {
-        return null;
+        Item item = new Item("empty object");
+        try (PreparedStatement ps = cn.prepareStatement("select * from items where id = ?")) {
+            ps.setInt(1, Integer.parseInt(id));
+            ResultSet resultSet = ps.executeQuery();
+            if (resultSet.next()) {
+                item.setName(resultSet.getString("name"));
+                item.setId(resultSet.getString("id"));
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+        return item;
+    }
+
+    private int indexOf(String id) {
+        int rsl = -1;
+        try (PreparedStatement ps = cn.prepareStatement("select items.id from items where id = ?")) {
+            ps.setInt(1, Integer.parseInt(id));
+            ResultSet resultSet = ps.executeQuery();
+            if (resultSet.next()) {
+                rsl = resultSet.getInt("id");
+            }
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+        return rsl;
     }
 }

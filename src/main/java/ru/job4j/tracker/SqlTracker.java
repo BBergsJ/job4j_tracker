@@ -39,6 +39,11 @@ public class SqlTracker implements Store {
         try (PreparedStatement ps = cn.prepareStatement("insert into items (name) values (?)")) {
             ps.setString(1, item.getName());
             ps.executeUpdate();
+            ResultSet resultSet = ps.getGeneratedKeys();
+            if (resultSet.next()) {
+                int id = resultSet.getInt(1);
+                item.setId(Integer.toString(id));
+            }
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
@@ -47,11 +52,11 @@ public class SqlTracker implements Store {
 
     @Override
     public boolean replace(String id, Item item) {
-        boolean rsl = indexOf(id) != -1;
+        boolean rsl = false;
         try (PreparedStatement ps = cn.prepareStatement("update items set name = ? where id = ?")) {
             ps.setString(1, item.getName());
             ps.setInt(2, Integer.parseInt(id));
-            ps.executeUpdate();
+            rsl = ps.executeUpdate() > 0;
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
@@ -60,10 +65,10 @@ public class SqlTracker implements Store {
 
     @Override
     public boolean delete(String id) {
-        boolean rsl = indexOf(id) != -1;
+        boolean rsl = false;
         try (PreparedStatement ps = cn.prepareStatement("delete from items where id = ?")) {
             ps.setInt(1, Integer.parseInt(id));
-            ps.executeUpdate();
+            rsl = ps.executeUpdate() > 0;
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }

@@ -81,7 +81,9 @@ public class SqlTracker implements Store {
         try (PreparedStatement ps = cn.prepareStatement("select * from items")) {
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
-                items.add(new Item(resultSet.getString("name")));
+                Item item = new Item(resultSet.getString("name"));
+                item.setId(resultSet.getString("id"));
+                items.add(item);
             }
         } catch (Exception e) {
             throw new IllegalStateException(e);
@@ -96,7 +98,9 @@ public class SqlTracker implements Store {
             ps.setString(1, key);
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
-                items.add(new Item(resultSet.getString("name")));
+                Item item = new Item(resultSet.getString("name"));
+                item.setId(resultSet.getString("id"));
+                items.add(item);
             }
         } catch (Exception e) {
             throw new IllegalStateException(e);
@@ -118,19 +122,5 @@ public class SqlTracker implements Store {
             throw new IllegalStateException(e);
         }
         return item;
-    }
-
-    private int indexOf(String id) {
-        int rsl = -1;
-        try (PreparedStatement ps = cn.prepareStatement("select items.id from items where id = ?")) {
-            ps.setInt(1, Integer.parseInt(id));
-            ResultSet resultSet = ps.executeQuery();
-            if (resultSet.next()) {
-                rsl = resultSet.getInt("id");
-            }
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-        return rsl;
     }
 }

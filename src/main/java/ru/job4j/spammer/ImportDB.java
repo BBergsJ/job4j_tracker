@@ -1,6 +1,8 @@
 package ru.job4j.spammer;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -63,7 +65,7 @@ public class ImportDB {
         try (FileInputStream in = new FileInputStream("./appSpammer.properties")) {
             cfg.load(in);
         }
-        ImportDB db = new ImportDB(cfg, "./dump.txt");
+        ImportDB db = new ImportDB(cfg, "dump.txt");
         db.save(db.load());
     }
 }

@@ -9,8 +9,8 @@ public class ShowAllAction implements UserAction {
     }
 
     @Override
-    public boolean execute(Input input, Store memTracker) throws Exception {
-        List<Item> allElem = memTracker.findAll();
+    public boolean execute(Input input, Store store) throws Exception {
+        List<Item> allElem = store.findAll();
         for (Item item:allElem) {
             System.out.println(item);
         }

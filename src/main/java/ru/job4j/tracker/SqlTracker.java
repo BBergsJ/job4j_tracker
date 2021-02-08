@@ -11,7 +11,7 @@ import java.util.Properties;
 
 public class SqlTracker implements Store, AutoCloseable {
 
-    private Connection cn;
+    private final Connection cn;
 
     public SqlTracker(Connection cn) {
         this.cn = cn;
@@ -22,7 +22,7 @@ public class SqlTracker implements Store, AutoCloseable {
             Properties config = new Properties();
             config.load(in);
             Class.forName(config.getProperty("driver-class-name"));
-            cn = DriverManager.getConnection(
+            cn =  DriverManager.getConnection(
                     config.getProperty("url"),
                     config.getProperty("username"),
                     config.getProperty("password")

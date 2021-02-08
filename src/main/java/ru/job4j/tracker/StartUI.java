@@ -1,8 +1,5 @@
 package ru.job4j.tracker;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class StartUI {
 
     public void init(Input input, Store tracker, UserAction[] actions) throws Exception {
@@ -49,7 +46,7 @@ public class StartUI {
         Input validate = new ValidateInput(
                 new ConsoleInput()
         );
-        try (Store tracker = new SqlTracker()) {
+        try (Store tracker = new SqlTracker(cn)) {
             tracker.init();
             UserAction[] actions = {
                     new CreateAction(),

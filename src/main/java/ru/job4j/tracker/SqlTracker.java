@@ -9,8 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class SqlTracker implements Store {
+public class SqlTracker implements Store, AutoCloseable {
+
     private Connection cn;
+
+    public SqlTracker(Connection cn) {
+        this.cn = cn;
+    }
 
     public void init() {
         try (InputStream in = SqlTracker.class.getClassLoader().getResourceAsStream("app.properties")) {
@@ -49,6 +54,25 @@ public class SqlTracker implements Store {
         }
         return item;
     }
+
+//    @Override
+//    public Item add(Item item) {
+//        try (final PreparedStatement statement = this.connection
+//                .prepareStatement("insert into items (name, desc) values (?)", Statement.RETURN_GENERATED_KEYS)) {
+//            statement.setString(1, item.getName());
+//            statement.setString(2, item.getDesc());
+//            statement.executeUpdate();
+//            try (ResultSet generatedKeys = statement.getGeneratedKeys()) {
+//                if (generatedKeys.next()) {
+//                    item.setId(generatedKeys.getString(1));
+//                    return item;
+//                }
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        throw new IllegalStateException("Could not create new user");
+//    }
 
     @Override
     public boolean replace(String id, Item item) {

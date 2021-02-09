@@ -11,7 +11,11 @@ import java.util.Properties;
 
 public class SqlTracker implements Store, AutoCloseable {
 
-    private final Connection cn;
+    private Connection cn;
+
+    public SqlTracker() {
+        init();
+    }
 
     public SqlTracker(Connection cn) {
         this.cn = cn;

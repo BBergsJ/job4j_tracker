@@ -67,8 +67,7 @@ public class SqlTrackerTest {
         try (SqlTracker tracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
             Item bug = new Item("Bug");
             tracker.add(bug);
-            List<Item> exist = tracker.findByName("Bug");
-            String id = tracker.findById(exist.get(exist.size() - 1).getId()).getId();
+            String id = bug.getId();
             Item replacer = new Item("Replacer");
             tracker.replace(id, replacer);
             assertThat(tracker.findById(id).getName(), is("Replacer"));
@@ -80,8 +79,7 @@ public class SqlTrackerTest {
         try (SqlTracker tracker = new SqlTracker(ConnectionRollback.create(this.init()))) {
             Item bug = new Item("Bug");
             tracker.add(bug);
-            List<Item> exist = tracker.findByName("Bug");
-            String id = tracker.findById(exist.get(exist.size() - 1).getId()).getId();
+            String id = bug.getId();
             tracker.delete(id);
             assertThat(tracker.findById(id).getName(), is("empty object"));
         }
